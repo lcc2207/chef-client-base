@@ -12,3 +12,6 @@ source_url 'https://github.com/lcc2207/chef-client-base'
 
 depends 'chef_client_updater', '~> 3.3.2'
 depends 'chef-client', '~> 10.0.4'
+depends 'sensu', '~> 4.3.1'
+depends 'chef-sugar'
+depends 'ntp', '~> 3.5.6'
