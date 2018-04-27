@@ -9,30 +9,15 @@ if amazon_linux?
   node.default['sensu']['version_suffix'] = '.el6'
 end
 
-# setup NTP
-include_recipe 'ntp::default'
-
 # install monitoring
 include_recipe 'sensu::default'
 
-# Install extra packages
-node['chef-client-base']['packages'].each do |pkg|
-  package pkg do
-    action :install
-    not_if { ubuntu? } # need a work around
-  end
-end
-
-# Install sensu client Gems
-node['chef-client-base']['gems'].each do |gem|
-  sensu_gem gem do
-    options '--no-document'
-  end
-end
-
 # Install sensu client plugins
-node['chef-client-base']['plugins'].each do |plugin|
-  sensu_plugin plugin
+node['chef-client-base']['plugins'].each do |plugin, version|
+  # sensu_plugin plugin
+  sensu_gem plugin do
+    version version
+  end
 end
 
 # Set up the client configuration
