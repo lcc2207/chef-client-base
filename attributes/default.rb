@@ -9,10 +9,22 @@ default['chef_client_updater']['product'] = 'chefdk'
 #   'ssl_verify_mode' => ':verify_peer',
 # }
 
+# docker monitoring
+default['chef-client-base']['docker']['monitoring'] = 'false'
+
+default['chef-client-base']['plugins'] = {
+  'sensu-plugin' => '2.5.0',
+  'sensu-plugins-cpu-checks' => '2.1.0',
+  'sensu-plugins-disk-checks' => '3.0.1',
+  'sensu-plugins-load-checks' => '4.0.2',
+  'sensu-plugins-memory-checks' => '3.2.0',
+  'sensu-plugins-network-checks' => '3.1.1',
+  'sensu-plugins-process-checks' => '3.0.2',
+  'sensu-plugins-docker' => '3.0.0',
+}
+
 # cookbook attributes
 default['chef-client-base']['sensu_base_ruby_path'] = '/opt/sensu/embedded/bin/ruby'
-default['chef-client-base']['postgresql']['db_password'] = nil
-default['chef-client-base']['sensu_checks'] = []
 default['chef-client-base']['sensu_base_reset'] = 60
 default['chef-client-base']['contact'] = 'support'
 default['chef-client-base']['checktime'] = 60
@@ -29,21 +41,14 @@ default['chef-client-base']['sensu_base_checks'] = [
   ['metrics-memory'],
   ['metrics-interface'],
   ['metrics-disk-capacity'],
+  if default['chef-client-base']['docker']['monitoring']
+    ['check-docker-container', '-h /run/docker.sock -w 1 -c 1']
+  end,
 ]
 
 # Sensu Monitoring
 default['chef-client-base']['sensu-client']['sudocommand'] = 'ALL'
 default['chef-client-base']['sensu-user'] = 'sensu'
-
-default['chef-client-base']['plugins'] = {
-  'sensu-plugin' => '2.5.0',
-  'sensu-plugins-cpu-checks' => '2.1.0',
-  'sensu-plugins-disk-checks' => '3.0.1',
-  'sensu-plugins-load-checks' => '4.0.2',
-  'sensu-plugins-memory-checks' => '3.2.0',
-  'sensu-plugins-network-checks' => '3.1.1',
-  'sensu-plugins-process-checks' => '3.0.2',
-}
 
 # Sensu install/config
 default['sensu']['version'] = '1.2.1-2'
@@ -52,4 +57,4 @@ default['sensu']['use_ssl'] = false
 default['sensu']['use_embedded_ruby'] = true
 
 # packages for sensu
-default['chef-client-base']['packages'] = %w(gcc g++ git make)
+default['chef-client-base']['packages'] = %w(g++ git make)

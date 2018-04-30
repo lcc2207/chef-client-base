@@ -1,4 +1,7 @@
 include_recipe 'chef-sugar'
+
+include_recipe 'apt::default' if ubuntu?
+
 if amazon_linux?
   # fix issue with sensu gem installs on AWS linux
   link '/bin/install' do
