@@ -50,3 +50,6 @@ default['sensu']['version'] = '1.2.1-2'
 default['sensu']['rabbitmq']['host'] = ''
 default['sensu']['use_ssl'] = false
 default['sensu']['use_embedded_ruby'] = true
+
+# packages for sensu
+default['chef-client-base']['packages'] = %w(gcc g++ git make)

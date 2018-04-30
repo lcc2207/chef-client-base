@@ -9,6 +9,13 @@ if amazon_linux?
   node.default['sensu']['version_suffix'] = '.el6'
 end
 
+# Install extra packages
+node['chef-client-base']['packages'].each do |pkg|
+  package pkg do
+    action :install
+  end
+end
+
 # install monitoring
 include_recipe 'sensu::default'
 

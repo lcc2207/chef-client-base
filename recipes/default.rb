@@ -5,6 +5,10 @@
 #   post_install_action 'kill'
 # end
 
+# execute 'knife fetch' do
+#   command 'knife fetch'
+# end
+
 # setup the chef-client
 include_recipe 'chef-client::default'
 include_recipe 'chef-client::delete_validation'
