@@ -41,9 +41,13 @@ default['chef-client-base']['sensu_base_checks'] = [
   ['metrics-memory'],
   ['metrics-interface'],
   ['metrics-disk-capacity'],
-  if default['chef-client-base']['docker']['monitoring']
-    ['check-docker-container', '-h /run/docker.sock -w 1 -c 1']
-  end,
+]
+
+# docker sensu checks
+default['chef-client-base']['docker']['sensu_checks'] = [
+  ['check-docker-container', '-h /run/docker.sock -w 1 -c 1'],
+  # ['check-container', '-h /run/docker.sock -c jenkins'],
+  ['metrics-docker-stats', '-p unix -H /var/run/docker.sock'],
 ]
 
 # Sensu Monitoring

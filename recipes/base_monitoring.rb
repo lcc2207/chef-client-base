@@ -67,5 +67,17 @@ node['chef-client-base']['sensu_base_checks'].each do |checkname|
   end
 end
 
+# setup Docker checks
+node['chef-client-base']['docker']['sensu_checks'].each do |checkname|
+  sensu_check checkname[0] do
+    command "#{checkname[0]}.rb #{checkname[1]}"
+    handlers node['chef-client-base']['handlers']
+    interval node['chef-client-base']['checktime']
+    standalone true
+    notifies :restart, 'sensu_service[sensu-client]', :delayed
+    only_if node['chef-client-base']['docker']['monitoring']
+  end
+end
+
 # run client servcies
 include_recipe 'sensu::client_service'
